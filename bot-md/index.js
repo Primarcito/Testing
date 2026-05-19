@@ -38,6 +38,11 @@ const commands = getCommandsMap();
 client.on('interactionCreate', async interaction => {
   // Filtrar guild y canal
   if (interaction.guildId !== config.GUILD_ID) return;
+  if (interaction.isChatInputCommand() && interaction.commandName === 'mover') {
+    const cmd = commands.get(interaction.commandName);
+    if (cmd) return cmd.execute(interaction);
+  }
+
   if (interaction.channelId !== config.CANAL_PERMITIDO) {
     if (interaction.isRepliable()) {
       return interaction.reply({
