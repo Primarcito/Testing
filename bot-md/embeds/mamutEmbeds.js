@@ -114,7 +114,6 @@ function buildMamutConfirmacion(lock, contador, activadoPor) {
   const embed = new EmbedBuilder()
     .setColor(0xCC0000)
     .setThumbnail(config.IMG_MAMUT)
-    .setImage(config.IMG_PANEL)
     .setDescription(
       `# 🦣 MAMUT ACTIVADO\n` +
       `El aviso MAMUT fue activado correctamente.\n` +
