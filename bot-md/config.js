@@ -6,7 +6,7 @@ module.exports = {
   TOKEN: process.env.BOT_TOKEN || process.env.TOKEN,
 
   CLIENT_ID: process.env.CLIENT_ID || '1506376324158197922',
-  GUILD_ID: '969420681349574677',
+  GUILD_ID: '1343602619477917707',
 
   // Roles
   ROLE_AUTORIZADO: ROLE_IDS.autorizado,

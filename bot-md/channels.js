@@ -1,9 +1,9 @@
 const CHANNEL_IDS = {
-  permitido: '1476468295006818304',
+  permitido: '1506377216244584561',
 };
 
 const CHANNEL_URLS = {
-  mamut: 'https://discord.com/channels/969420681349574677/1476467569664852009',
+  mamut: 'https://discord.com/channels/1343602619477917707/1506383612088418450',
 };
 
 module.exports = {
