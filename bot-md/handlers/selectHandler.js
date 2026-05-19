@@ -1,5 +1,5 @@
-const { ActionRowBuilder } = require('discord.js');
 const config = require('../config');
+const { canUseMamut } = require('../permissions');
 const state = require('../data/state');
 const { enviarMamut, registrarLog } = require('../utils/mamut');
 const { buildSelectorDesactivado } = require('../embeds/mamutEmbeds');
@@ -10,7 +10,7 @@ module.exports = async function handleSelect(interaction) {
   if (interaction.customId === 'selector_ciudad') {
     const member = await interaction.guild.members.fetch(interaction.user.id);
 
-    if (!member.roles.cache.has(config.ROLE_AUTORIZADO)) {
+    if (!canUseMamut(member)) {
       return interaction.reply({ content: '❌ No autorizado.', ephemeral: true });
     }
 

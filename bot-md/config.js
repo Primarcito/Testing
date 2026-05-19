@@ -1,15 +1,16 @@
 require('dotenv').config();
+const { ROLE_IDS } = require('./permissions');
 
 module.exports = {
-  TOKEN: process.env.TOKEN,
+  TOKEN: process.env.BOT_TOKEN || process.env.TOKEN,
 
-  CLIENT_ID: '1476138650331906163',
+  CLIENT_ID: process.env.CLIENT_ID || '1506376324158197922',
   GUILD_ID: '969420681349574677',
 
   // Roles
-  ROLE_AUTORIZADO: '1476467289418367158',
-  ROLE_OBJETIVO: '1476467289418367158',
-  ROLE_ADMIN: '983987481961717782',
+  ROLE_AUTORIZADO: ROLE_IDS.autorizado,
+  ROLE_OBJETIVO: ROLE_IDS.objetivo,
+  ROLE_ADMIN: ROLE_IDS.admin,
 
   // Canales
   CANAL_PERMITIDO: '1476468295006818304',

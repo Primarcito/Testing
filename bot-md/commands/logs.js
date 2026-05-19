@@ -1,10 +1,10 @@
-const config = require('../config');
+const { canViewLogs } = require('../permissions');
 const { buildLogsEmbed } = require('../embeds/mamutEmbeds');
 
 module.exports = {
   async execute(interaction) {
     const member = await interaction.guild.members.fetch(interaction.user.id);
-    if (!member.roles.cache.has(config.ROLE_ADMIN)) {
+    if (!canViewLogs(member)) {
       return interaction.reply({ content: '❌ No tenés permiso para usar este comando.', ephemeral: true });
     }
 
