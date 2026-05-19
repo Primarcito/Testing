@@ -1,8 +1,8 @@
 const ROLE_IDS = {
-  autorizado: '1476467289418367158',
-  objetivo: '1476467289418367158',
-  admin: '983987481961717782',
-  mover: '1336825861466488975',
+  autorizado: '1473624624964173952',
+  objetivo: '1473624624964173952',
+  admin: '1473624624964173952',
+  mover: '1473624624964173952',
 };
 
 function hasRole(member, roleId) {

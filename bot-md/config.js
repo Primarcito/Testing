@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { ROLE_IDS } = require('./permissions');
+const { CHANNEL_IDS, CHANNEL_URLS } = require('./channels');
 
 module.exports = {
   TOKEN: process.env.BOT_TOKEN || process.env.TOKEN,
@@ -13,8 +14,8 @@ module.exports = {
   ROLE_ADMIN: ROLE_IDS.admin,
 
   // Canales
-  CANAL_PERMITIDO: '1476468295006818304',
-  CANAL_URL: 'https://discord.com/channels/969420681349574677/1476467569664852009',
+  CANAL_PERMITIDO: CHANNEL_IDS.permitido,
+  CANAL_URL: CHANNEL_URLS.mamut,
 
   // Ciudades de Albion
   CIUDADES: ['Lymhurst', 'Martlock', 'Fort Sterling', 'Thetford', 'Bridgewatch', 'Roja'],

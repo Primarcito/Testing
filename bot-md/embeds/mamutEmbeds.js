@@ -123,7 +123,7 @@ function buildDMEmbed(ciudad, numeroDm) {
     .setTimestamp();
 
   return {
-    content: `https://discord.com/channels/969420681349574677/1476467569664852009`,
+    content: config.CANAL_URL,
     embeds: [embed]
   };
 }
