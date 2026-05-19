@@ -5,9 +5,9 @@ const { buildMamutConfirmacion, buildDMEmbed } = require('../embeds/mamutEmbeds'
 
 // ─── Registrar en el historial ────────────────────────────────────────────────
 
-function registrarLog(usuario, ciudad, mensajes) {
+function registrarLog(usuario, ciudad, mensajes, mapa = null) {
   const fecha = new Date().toLocaleString('es-AR', { timeZone: 'America/Buenos_Aires' });
-  state.historialMamut.unshift({ usuario, ciudad, fecha, mensajes });
+  state.historialMamut.unshift({ usuario, ciudad, mapa, fecha, mensajes });
 
   // Limitar tamaño
   if (state.historialMamut.length > config.MAX_HISTORIAL) {
@@ -26,7 +26,7 @@ function delay(ms) {
 
 // ─── Enviar DMs a todos los miembros del rol ──────────────────────────────────
 
-async function enviarMamut(guild, lock, canal, activadoPor) {
+async function enviarMamut(guild, lock, canal, activadoPor, mapa = null) {
   const targets = guild.members.cache.filter(m => m.roles.cache.has(config.ROLE_OBJETIVO));
 
   // Buscar mensajes viejos de confirmación de mamut y borrarlos
@@ -45,14 +45,14 @@ async function enviarMamut(guild, lock, canal, activadoPor) {
   }
 
   // Avisar primero en el canal; se actualiza al terminar los mensajes directos.
-  const embedInicial = buildMamutConfirmacion(lock, 0, activadoPor);
+  const embedInicial = buildMamutConfirmacion(lock, 0, activadoPor, mapa);
   const aviso = await canal.send({ content: `<@&${config.ROLE_OBJETIVO}>`, embeds: [embedInicial] });
 
   let contador = 0;
   for (const [, target] of targets) {
     for (let i = 0; i < config.DMS_POR_MIEMBRO; i++) {
       try {
-        const dmPayload = buildDMEmbed(lock, i + 1);
+        const dmPayload = buildDMEmbed(lock, i + 1, mapa);
         await target.send(dmPayload);
         contador++;
 
@@ -69,7 +69,7 @@ async function enviarMamut(guild, lock, canal, activadoPor) {
   }
 
   // Actualizar el aviso del canal con el total enviado.
-  const embed = buildMamutConfirmacion(lock, contador, activadoPor);
+  const embed = buildMamutConfirmacion(lock, contador, activadoPor, mapa);
   await aviso.edit({ embeds: [embed] }).catch(() => {});
 
   if (typeof state.schedulePanelRepost === 'function') {

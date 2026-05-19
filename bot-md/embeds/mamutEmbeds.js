@@ -8,6 +8,7 @@ const {
 } = require('discord.js');
 const config = require('../config');
 const state = require('../data/state');
+const { getMapsForCity } = require('../maps');
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 1. PANEL PRINCIPAL — Embed persistente en el canal configurado
@@ -21,7 +22,7 @@ function buildPanel() {
   const mamutHoy = state.historialMamut.filter(e => e.fecha && e.fecha.startsWith(hoy)).length;
   const ultimo = state.historialMamut[0];
   const ultimoTexto = ultimo
-    ? `${config.EMOJIS_CIUDAD[ultimo.ciudad] || '📍'} ${ultimo.ciudad}`
+    ? `${config.EMOJIS_CIUDAD[ultimo.ciudad] || '📍'} ${ultimo.ciudad}${ultimo.mapa ? ` • ${ultimo.mapa}` : ''}`
     : '*Ninguno*';
 
   const embed = new EmbedBuilder()
@@ -66,7 +67,7 @@ function buildPanel() {
 // 2. DM EMBED — Enviado 3 veces a cada miembro del rol
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function buildDMEmbed(ciudad, numeroDm) {
+function buildDMEmbed(ciudad, numeroDm, mapa = null) {
   const emojiCiudad = config.EMOJIS_CIUDAD[ciudad] || '📍';
 
   const embed = new EmbedBuilder()
@@ -79,8 +80,8 @@ function buildDMEmbed(ciudad, numeroDm) {
     )
     .addFields(
       { name: '🏙️ Ciudad',   value: `\`${ciudad}\``,           inline: true },
+      { name: '🗺️ Mapa',      value: mapa ? `\`${mapa}\`` : '`Sin especificar`', inline: true },
       { name: '📢 Guild',     value: '`TyrannT`',               inline: true },
-      { name: '\u200b',        value: '\u200b',                   inline: true },
       { name: '📩 Aviso',     value: '`Mensaje automático`',    inline: true },
       { name: '🔁 Mensaje',   value: `\`${numeroDm}/${config.DMS_POR_MIEMBRO}\``, inline: true },
       { name: '\u200b',        value: '\u200b',                   inline: true },
@@ -98,7 +99,7 @@ function buildDMEmbed(ciudad, numeroDm) {
 // 3. CONFIRMACIÓN — Embed público en el canal después de activar MAMUT
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function buildMamutConfirmacion(lock, contador, activadoPor) {
+function buildMamutConfirmacion(lock, contador, activadoPor, mapa = null) {
   const horaUTC = new Date().toLocaleTimeString('es-AR', {
     timeZone: 'America/Buenos_Aires',
     hour: '2-digit',
@@ -118,9 +119,9 @@ function buildMamutConfirmacion(lock, contador, activadoPor) {
       { name: '👤 Activado por',       value: activadoPor,                       inline: true },
       { name: '🏙️ Ciudad',            value: `${emojiCiudad} \`${lock}\``,      inline: true },
       { name: '\u200b',                 value: '\u200b',                           inline: true },
+      { name: '🗺️ Mapa',               value: mapa ? `\`${mapa}\`` : '`Sin especificar`', inline: true },
       { name: '📩 Mensajes por usuario', value: `\`${config.DMS_POR_MIEMBRO}\``, inline: true },
       { name: '📊 Estado',             value: contador > 0 ? `\`${contador} enviados\`` : '`Enviando...`', inline: true },
-      { name: '\u200b',                 value: '\u200b',                           inline: true },
       {
         name: '\u200b',
         value: '> ⚠️ *Solo los usuarios autorizados pueden activar este sistema.*',
@@ -156,6 +157,29 @@ function buildSelectorCiudades() {
     content: '🦣 **¿En qué ciudad apareció el mamut?**',
     components: [row],
     ephemeral: true
+  };
+}
+
+function buildSelectorMapas(ciudad) {
+  const mapas = getMapsForCity(ciudad);
+
+  const select = new StringSelectMenuBuilder()
+    .setCustomId(`selector_mapa:${ciudad}`)
+    .setPlaceholder('Selecciona el mapa...')
+    .addOptions(
+      mapas.slice(0, 25).map((mapa, index) =>
+        new StringSelectMenuOptionBuilder()
+          .setLabel(mapa.slice(0, 100))
+          .setValue(String(index))
+          .setEmoji('🗺️')
+      )
+    );
+
+  const row = new ActionRowBuilder().addComponents(select);
+
+  return {
+    content: `🗺️ **${ciudad}** — selecciona el mapa:`,
+    components: [row]
   };
 }
 
@@ -230,6 +254,7 @@ module.exports = {
   buildPanel,
   buildDMEmbed,
   buildSelectorCiudades,
+  buildSelectorMapas,
   buildSelectorDesactivado,
   buildMamutConfirmacion,
   buildLogsEmbed,
