@@ -1,3 +1,7 @@
+const SERVER_IDS = {
+  test: '1343602619477917707',
+};
+
 const ROLE_IDS = {
   autorizado: '1473624624964173952',
   objetivo: '1473624624964173952',
@@ -26,6 +30,7 @@ function canMoveMembers(member) {
 }
 
 module.exports = {
+  SERVER_IDS,
   ROLE_IDS,
   hasRole,
   canUseMamut,

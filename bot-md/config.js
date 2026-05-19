@@ -1,12 +1,12 @@
 require('dotenv').config();
-const { ROLE_IDS } = require('./permissions');
+const { SERVER_IDS, ROLE_IDS } = require('./permissions');
 const { CHANNEL_IDS, CHANNEL_URLS } = require('./channels');
 
 module.exports = {
   TOKEN: process.env.BOT_TOKEN || process.env.TOKEN,
 
   CLIENT_ID: process.env.CLIENT_ID || '1506376324158197922',
-  GUILD_ID: '1343602619477917707',
+  GUILD_ID: SERVER_IDS.test,
 
   // Roles
   ROLE_AUTORIZADO: ROLE_IDS.autorizado,
