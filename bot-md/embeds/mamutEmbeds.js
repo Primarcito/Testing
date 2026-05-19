@@ -112,15 +112,13 @@ function buildMamutConfirmacion(lock, contador, activadoPor, mapa = null) {
     .setDescription(
       `# 🦣 MAMUT ACTIVADO\n` +
       `El aviso MAMUT fue activado correctamente.\n` +
-      `Los miembros del rol serán notificados por mensaje directo.`
+      `Los miembros del rol serán notificados por mensaje directo.\n\n` +
+      `👤 **${activadoPor}** • ${emojiCiudad} **${lock}**${mapa ? ` • 🗺️ **${mapa}**` : ''}`
     )
     .addFields(
-      { name: '👤 Activado por',       value: activadoPor,                       inline: true },
-      { name: '🏙️ Ciudad',            value: `${emojiCiudad} \`${lock}\``,      inline: true },
-      { name: '\u200b',                 value: '\u200b',                           inline: true },
-      { name: '🗺️ Mapa',               value: mapa ? `\`${mapa}\`` : '`Sin especificar`', inline: true },
       { name: '📩 Mensajes por usuario', value: `\`${config.DMS_POR_MIEMBRO}\``, inline: true },
       { name: '📊 Estado',             value: contador > 0 ? `\`${contador} enviados\`` : '`Enviando...`', inline: true },
+      { name: '\u200b',                 value: '\u200b',                           inline: true },
       {
         name: '\u200b',
         value: '> ⚠️ *Solo los usuarios autorizados pueden activar este sistema.*',
