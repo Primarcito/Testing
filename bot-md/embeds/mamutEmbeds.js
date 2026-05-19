@@ -46,11 +46,6 @@ function buildPanel() {
         name: '\u200b',
         value: '\u200b',
         inline: true
-      },
-      {
-        name: '\u200b',
-        value: '\u200b',
-        inline: true
       }
     )
     .setFooter({ text: `TyrannT • ${horaUTC} UTC` })
@@ -124,7 +119,7 @@ function buildMamutConfirmacion(lock, contador, activadoPor) {
       { name: '🏙️ Ciudad',            value: `${emojiCiudad} \`${lock}\``,      inline: true },
       { name: '\u200b',                 value: '\u200b',                           inline: true },
       { name: '📩 Mensajes por usuario', value: `\`${config.DMS_POR_MIEMBRO}\``, inline: true },
-      { name: '📊 Estado',             value: `\`${contador} enviados\``,         inline: true },
+      { name: '📊 Estado',             value: contador > 0 ? `\`${contador} enviados\`` : '`Enviando...`', inline: true },
       { name: '\u200b',                 value: '\u200b',                           inline: true },
       {
         name: '\u200b',

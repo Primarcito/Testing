@@ -29,6 +29,25 @@ function delay(ms) {
 async function enviarMamut(guild, lock, canal, activadoPor) {
   const targets = guild.members.cache.filter(m => m.roles.cache.has(config.ROLE_OBJETIVO));
 
+  // Buscar mensajes viejos de confirmación de mamut y borrarlos
+  try {
+    const mensajes = await canal.messages.fetch({ limit: 50 });
+    const avisosViejos = mensajes.filter(
+      m => m.author.id === canal.client.user.id &&
+           m.embeds.length > 0 &&
+           m.embeds[0].description?.includes('MAMUT ACTIVADO')
+    );
+    for (const [, msg] of avisosViejos) {
+      await msg.delete().catch(() => {});
+    }
+  } catch (err) {
+    console.log('Error borrando avisos de mamut viejos:', err.message);
+  }
+
+  // Avisar primero en el canal; se actualiza al terminar los mensajes directos.
+  const embedInicial = buildMamutConfirmacion(lock, 0, activadoPor);
+  const aviso = await canal.send({ content: `<@&${config.ROLE_OBJETIVO}>`, embeds: [embedInicial] });
+
   let contador = 0;
   for (const [, target] of targets) {
     for (let i = 0; i < config.DMS_POR_MIEMBRO; i++) {
@@ -49,24 +68,9 @@ async function enviarMamut(guild, lock, canal, activadoPor) {
     }
   }
 
-  // Buscar mensajes viejos de confirmación de mamut y borrarlos
-  try {
-    const mensajes = await canal.messages.fetch({ limit: 50 });
-    const avisosViejos = mensajes.filter(
-      m => m.author.id === canal.client.user.id &&
-           m.embeds.length > 0 &&
-           m.embeds[0].description?.includes('MAMUT ACTIVADO')
-    );
-    for (const [, msg] of avisosViejos) {
-      await msg.delete().catch(() => {});
-    }
-  } catch (err) {
-    console.log('Error borrando avisos de mamut viejos:', err.message);
-  }
-
-  // Embed de confirmación al canal
+  // Actualizar el aviso del canal con el total enviado.
   const embed = buildMamutConfirmacion(lock, contador, activadoPor);
-  await canal.send({ content: `<@&${config.ROLE_OBJETIVO}>`, embeds: [embed] });
+  await aviso.edit({ embeds: [embed] }).catch(() => {});
 
   if (typeof state.schedulePanelRepost === 'function') {
     state.schedulePanelRepost(guild);
