@@ -48,9 +48,9 @@ function buildPanel() {
         inline: true
       },
       {
-        name: '📩 Mensajes por usuario',
-        value: `\`${config.DMS_POR_MIEMBRO}\``,
-        inline: false
+        name: '\u200b',
+        value: '\u200b',
+        inline: true
       }
     )
     .setFooter({ text: `TyrannT • ${horaUTC} UTC` })
