@@ -53,5 +53,6 @@ module.exports = {
   DMS_POR_MIEMBRO: 3,
   COOLDOWN_MS: 30000,
   DM_DELAY_MS: 500, // Pausa entre cada DM (ms)
+  PANEL_REPOST_AFTER_MAMUT_MS: 10 * 60 * 1000, // 10 minutos
   AUTO_PANEL_INTERVAL_MS: 60 * 60 * 1000, // 1 hora
 };

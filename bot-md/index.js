@@ -132,12 +132,12 @@ async function sincronizarPanel(guild) {
     }
   }
 
-  // Borrar paneles anteriores huérfanos (que tengan "PANEL MAMUT" en el embed)
+  // Borrar paneles anteriores huérfanos.
   const mensajes = await canal.messages.fetch({ limit: 50 });
   const paneles = mensajes.filter(
     m => m.author.id === client.user.id &&
          m.embeds.length > 0 &&
-         m.embeds[0].footer?.text?.includes('TyrannT')
+         m.embeds[0].description?.includes('PANEL MAMUT')
   );
   for (const [, msg] of paneles) {
     await msg.delete().catch(() => {});
@@ -154,6 +154,36 @@ async function sincronizarPanel(guild) {
 
   console.log('Panel creado.');
 }
+
+async function recrearPanel(guild) {
+  if (state.panelMessage) {
+    await state.panelMessage.delete().catch(() => {});
+  }
+
+  state.panelChannelId = null;
+  state.panelMessageId = null;
+  state.panelMessage = null;
+  guardarPanel();
+
+  await sincronizarPanel(guild);
+}
+
+function schedulePanelRepost(guild) {
+  if (state.panelRepostTimeout) clearTimeout(state.panelRepostTimeout);
+
+  state.panelRepostTimeout = setTimeout(async () => {
+    try {
+      await recrearPanel(guild);
+      console.log('Panel reenviado 10 minutos después del MAMUT.');
+    } catch (err) {
+      console.error('Error reenviando panel después del MAMUT:', err);
+    } finally {
+      state.panelRepostTimeout = null;
+    }
+  }, config.PANEL_REPOST_AFTER_MAMUT_MS);
+}
+
+state.schedulePanelRepost = schedulePanelRepost;
 
 /* ================= READY ================= */
 

@@ -68,6 +68,10 @@ async function enviarMamut(guild, lock, canal, activadoPor) {
   const embed = buildMamutConfirmacion(lock, contador, activadoPor);
   await canal.send({ content: `<@&${config.ROLE_OBJETIVO}>`, embeds: [embed] });
 
+  if (typeof state.schedulePanelRepost === 'function') {
+    state.schedulePanelRepost(guild);
+  }
+
   return contador;
 }
 
