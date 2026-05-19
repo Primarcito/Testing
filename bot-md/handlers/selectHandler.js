@@ -16,7 +16,7 @@ module.exports = async function handleSelect(interaction) {
 
     // Evita doble disparo
     if (state.cooldowns.has(interaction.user.id)) {
-      return interaction.reply({ content: '⏳ Esperá un momento, ya hay un mamut en proceso.', ephemeral: true });
+      return interaction.reply({ content: '⏳ Espera un momento, ya hay un mamut en proceso.', ephemeral: true });
     }
     state.cooldowns.add(interaction.user.id);
 
