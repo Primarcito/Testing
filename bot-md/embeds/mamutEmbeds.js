@@ -8,7 +8,6 @@ const {
 } = require('discord.js');
 const config = require('../config');
 const state = require('../data/state');
-const { getMapsForCity } = require('../maps');
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 1. PANEL PRINCIPAL — Embed persistente en el canal configurado
@@ -160,9 +159,7 @@ function buildSelectorCiudades() {
   };
 }
 
-function buildSelectorMapas(ciudad) {
-  const mapas = getMapsForCity(ciudad);
-
+function buildSelectorMapas(ciudad, mapas) {
   const select = new StringSelectMenuBuilder()
     .setCustomId(`selector_mapa:${ciudad}`)
     .setPlaceholder('Selecciona el mapa...')

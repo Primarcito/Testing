@@ -16,10 +16,10 @@ module.exports = async function handleSelect(interaction) {
     }
 
     const lock = interaction.values[0];
-    const mapas = getMapsForCity(lock);
+    const mapas = await getMapsForCity(lock);
 
     if (mapas.length > 0) {
-      return interaction.update(buildSelectorMapas(lock));
+      return interaction.update(buildSelectorMapas(lock, mapas));
     }
 
     await procesarMamut(interaction, lock);
@@ -29,7 +29,7 @@ module.exports = async function handleSelect(interaction) {
 
   if (interaction.customId.startsWith('selector_mapa:')) {
     const lock = interaction.customId.replace('selector_mapa:', '');
-    const mapas = getMapsForCity(lock);
+    const mapas = await getMapsForCity(lock);
     const mapa = mapas[Number(interaction.values[0])] || null;
 
     await procesarMamut(interaction, lock, mapa);
