@@ -24,61 +24,31 @@ function buildPanel() {
     ? `${config.EMOJIS_CIUDAD[ultimo.ciudad] || '📍'} ${ultimo.ciudad}`
     : '*Ninguno*';
 
-  // Ciudades en dos columnas (3+3)
-  const mitad = Math.ceil(config.CIUDADES.length / 2);
-  const col1 = config.CIUDADES.slice(0, mitad)
-    .map(c => `${config.EMOJIS_CIUDAD[c] || '📍'} ${c}`).join('\n');
-  const col2 = config.CIUDADES.slice(mitad)
-    .map(c => `${config.EMOJIS_CIUDAD[c] || '📍'} ${c}`).join('\n');
-
   const embed = new EmbedBuilder()
     .setColor(0xCC0000)
-    .setThumbnail(config.IMG_MAMUT)
-    .setImage(config.IMG_PANEL)
     .setDescription(
       `## 🦣 PANEL MAMUT\n` +
-      `Se ha detectado un **FELPUDITO**.\n` +
-      `Se enviarán **${config.DMS_POR_MIEMBRO} mensajes directos** a cada miembro del rol.`
+      `Sistema de alerta rápida para eventos MAMUT.`
     )
     .addFields(
-      // ── Fila 1: Pasos (3 inline) ──
       {
-        name: '`1` Presiona',
-        value: '🦣 **MAMUT**',
+        name: '📊 Mamuts activados hoy',
+        value: `\`${mamutHoy}\``,
         inline: true
       },
       {
-        name: '`2` Selecciona',
-        value: '🏙️ la ciudad',
-        inline: true
-      },
-      {
-        name: '`3` El bot notifica',
-        value: '📩 por mensaje directo',
-        inline: true
-      },
-      // ── Fila 2: Ciudades (2 col) + Estado (1 col) ──
-      {
-        name: '🏙️ CIUDADES DISPONIBLES',
-        value: col1,
+        name: '🦣 Último mamut',
+        value: ultimoTexto,
         inline: true
       },
       {
         name: '\u200b',
-        value: col2,
+        value: '\u200b',
         inline: true
       },
       {
-        name: '📊 ESTADO ACTUAL',
-        value:
-          `Activaciones: \`${mamutHoy}\`\n` +
-          `Último: ${ultimoTexto}`,
-        inline: true
-      },
-      // ── Warning ──
-      {
-        name: '\u200b',
-        value: '⚠️ Solo pueden usarlo los miembros con el rol autorizado.',
+        name: '📩 Mensajes por usuario',
+        value: `\`${config.DMS_POR_MIEMBRO}\``,
         inline: false
       }
     )
