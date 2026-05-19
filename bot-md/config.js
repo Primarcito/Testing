@@ -41,7 +41,7 @@ module.exports = {
   },
 
   // Imágenes
-  IMG_PANEL: 'https://i.imgur.com/LLvS7zA.jpeg',
+  IMG_PANEL: 'https://i.imgur.com/iRvb9T9.jpeg',
   IMG_MAMUT: 'https://i.imgur.com/hWRtOdm.jpeg',
 
   // Archivos de persistencia

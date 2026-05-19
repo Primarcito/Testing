@@ -26,6 +26,7 @@ function buildPanel() {
 
   const embed = new EmbedBuilder()
     .setColor(0xCC0000)
+    .setImage(config.IMG_PANEL)
     .setDescription(
       `## 🦣 PANEL MAMUT\n` +
       `Sistema de alerta rápida para eventos MAMUT.`
