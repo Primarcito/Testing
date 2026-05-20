@@ -21,7 +21,7 @@ function buildPanel() {
   const mamutHoy = state.historialMamut.filter(e => e.fecha && e.fecha.startsWith(hoy)).length;
   const ultimo = state.historialMamut[0];
   const ultimoTexto = ultimo
-    ? `${config.EMOJIS_CIUDAD[ultimo.ciudad] || '📍'} ${ultimo.ciudad}${ultimo.mapa ? ` • ${ultimo.mapa}` : ''}`
+    ? `${config.EMOJIS_CIUDAD[ultimo.ciudad] || '📍'} **${ultimo.ciudad}**${ultimo.mapa ? `\n🗺️ ${ultimo.mapa}` : ''}`
     : '*Ninguno*';
 
   const embed = new EmbedBuilder()
@@ -33,12 +33,12 @@ function buildPanel() {
     )
     .addFields(
       {
-        name: '📊 Mamuts activados hoy',
-        value: `\`${mamutHoy}\``,
+        name: '📊 Activaciones',
+        value: `Hoy: **${mamutHoy}**`,
         inline: true
       },
       {
-        name: '🦣 Último mamut',
+        name: '🦣 Último aviso',
         value: ultimoTexto,
         inline: true
       },
@@ -113,12 +113,10 @@ function buildMamutConfirmacion(lock, contador, activadoPor, mapa = null) {
       `# 🦣 MAMUT ACTIVADO\n` +
       `El aviso MAMUT fue activado correctamente.\n` +
       `Los miembros del rol serán notificados por mensaje directo.\n\n` +
-      `👤 **${activadoPor}** • ${emojiCiudad} **${lock}**${mapa ? ` • 🗺️ **${mapa}**` : ''}`
+      `👤 **${activadoPor}** • ${emojiCiudad} **${lock}**${mapa ? ` • 🗺️ **${mapa}**` : ''}\n` +
+      `📩 **${config.DMS_POR_MIEMBRO}** mensajes por usuario • ${contador > 0 ? `📊 **${contador}** enviados` : '📊 Enviando...'}`
     )
     .addFields(
-      { name: '📩 Mensajes por usuario', value: `\`${config.DMS_POR_MIEMBRO}\``, inline: true },
-      { name: '📊 Estado',             value: contador > 0 ? `\`${contador} enviados\`` : '`Enviando...`', inline: true },
-      { name: '\u200b',                 value: '\u200b',                           inline: true },
       {
         name: '\u200b',
         value: '> ⚠️ *Solo los usuarios autorizados pueden activar este sistema.*',
